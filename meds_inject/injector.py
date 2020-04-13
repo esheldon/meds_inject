@@ -2,7 +2,7 @@ import numpy as np
 import galsim
 import ngmix
 import fitsio
-from .pbar import prange
+from tqdm import tqdm
 
 SCALE = 0.263
 PSF_NOISE = 1.0e-6
@@ -134,11 +134,6 @@ def make_seg_image(*, args, rng, cat, iobj):
     return seg
 
 
-def print_progress(num, i):
-    if i == 0 or (i + 1) % 100 == 0:
-        print('%d/%d  %g%%' % (i+1, num, (i+1)/num*100))
-
-
 def get_cutout(*, args, rng, cat, iobj, icut, cutout_type):
     """
     get a simulated cutout, possibly resetting values
@@ -191,9 +186,7 @@ def write_cutouts(*, args, fits, cat, cutout_type, rng):
     else:
         num = cat.size
 
-    for iobj in prange(num):
-        print_progress(cat.size, iobj)
-
+    for iobj in tqdm(range(num)):
         for icut in range(cat['ncutout'][iobj]):
             image = get_cutout(
                 args=args,
@@ -221,8 +214,7 @@ def write_psf_cutouts(*, args, fits, cat, rng):
     else:
         num = cat.size
 
-    for iobj in prange(num):
-        print_progress(cat.size, iobj)
+    for iobj in tqdm(range(num)):
 
         for icut in range(cat['ncutout'][iobj]):
             image = make_psf_image(
@@ -260,7 +252,31 @@ def set_jacobian(cat):
 
 
 def inject(args):
+    """
+    inject signal into all postage stamps
 
+    Parameters
+    ----------
+    args: argparse.ArgumentParser
+        args.file
+            filename, the data will be over-written
+        args.seed int
+            Random seed for simulation
+        args.g1 float
+            g1 value for objects
+        args.g2 floa
+            g2 value for objects
+        args.mag float
+            magnitude for objects
+        args.fwhm float
+            fwhm arssec for gaussian objects
+        args.psf_fwhm float
+            fwhm arcsec for gaussian psf
+        args.noise float
+            noise for images
+        args.ntest int
+            just test this many objects
+    """
     rng = np.random.RandomState(args.seed)
 
     with fitsio.FITS(args.file, 'rw') as fits:
