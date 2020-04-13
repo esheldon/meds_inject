@@ -9,7 +9,7 @@ setup(
     version="0.1.0",
     packages=find_packages(),
     scripts=scripts,
-    # install_requires=['numpy', 'galsim', 'tqdm', 'fitsio', 'ngmix'],
+    # install_requires=['numpy', 'galsim', 'tqdm', 'fitsio'],
     author='Erin Sheldon',
     author_email='erin.sheldon@gmail.com',
     url='https://github.com/esheldon/meds_inject',
