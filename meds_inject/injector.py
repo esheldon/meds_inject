@@ -61,18 +61,18 @@ def make_obj_image(*, args, rng, cat, iobj, icut):
     obj0 = make_obj(args)
     obj = galsim.Convolve(obj0, psf_obj)
 
-    offset = rng.uniform(low=-0.5, high=0.5, size=2)
+    rowoff, coloff = rng.uniform(low=-0.5, high=0.5, size=2)
 
     box_size = cat['box_size'][iobj]
 
-    im = make_image(obj, [box_size]*2, offset=offset)
+    im = make_image(obj, [box_size]*2, offset=(coloff, rowoff))
 
-    cen = (np.array(im.shape)-1.0)/2.0 + offset
+    cen = (np.array(im.shape)-1.0)/2.0
 
     add_noise(rng=rng, image=im, noise=args.noise)
 
-    cat['cutout_row'][iobj, icut] = cen[0]
-    cat['cutout_col'][iobj, icut] = cen[1]
+    cat['cutout_row'][iobj, icut] = cen[0] + rowoff
+    cat['cutout_col'][iobj, icut] = cen[1] + coloff
 
     return im.astype('f4')
 
