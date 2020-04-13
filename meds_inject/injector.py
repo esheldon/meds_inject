@@ -1,6 +1,5 @@
 import numpy as np
 import galsim
-import ngmix
 import fitsio
 from tqdm import tqdm
 
@@ -241,14 +240,11 @@ def set_jacobian(cat):
     set all jacobian entries according to our
     chosen pixel scale
     """
-    jac = ngmix.DiagonalJacobian(
-        row=35, col=35, scale=SCALE,
-    )
 
-    cat['dudrow'] = jac.dudrow
-    cat['dudcol'] = jac.dudcol
-    cat['dvdrow'] = jac.dvdrow
-    cat['dvdcol'] = jac.dvdcol
+    cat['dudrow'] = 0.0
+    cat['dudcol'] = SCALE
+    cat['dvdrow'] = SCALE
+    cat['dvdcol'] = 0.0
 
 
 def inject(args):
