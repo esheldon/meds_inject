@@ -6,15 +6,23 @@ from meds_inject import inject
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--file', required=True)
-    parser.add_argument('--seed', type=int, required=True)
-    parser.add_argument('--g1', type=float, required=True)
-    parser.add_argument('--g2', type=float, required=True)
+    parser.add_argument('--file', required=True,
+                        help='filename of MEDS file.  The data are overwritten')
+    parser.add_argument('--seed', type=int, required=True,
+                        help='random seed')
+    parser.add_argument('--g1', type=float, required=True,
+                        help='g1 for objects')
+    parser.add_argument('--g2', type=float, required=True,
+                        help='g2 for objects')
 
-    parser.add_argument('--mag', type=float, default=17.5)
-    parser.add_argument('--fwhm', type=float, default=1.0)
-    parser.add_argument('--psf-fwhm', type=float, default=0.9)
-    parser.add_argument('--noise', type=float, default=9.0)
+    parser.add_argument('--mag', type=float, default=17.5,
+                        help='magnitude of objects (zero point 30)')
+    parser.add_argument('--fwhm', type=float, default=1.0,
+                        help='fwhm in arcsec of gaussian objects')
+    parser.add_argument('--psf-fwhm', type=float, default=0.9,
+                        help='fwhm in arcsec of gaussian psf')
+    parser.add_argument('--noise', type=float, default=9.0,
+                        help='noise in images')
 
     parser.add_argument('--ntest', type=int,
                         help='just test with this many objects')
